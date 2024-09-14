@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Vibra App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        input {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            width: 60px;
+            text-align: center;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="question"></h1>
+    <input type="number" id="answer" placeholder="Resposta">
+    <button onclick="checkAnswer()">Verificar</button>
+
+    <script>
+        let currentQuestion;
+
+        function generateQuestion() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const operators = ['+', '-', '*', '/'];
+            const operator = operators[Math.floor(Math.random() * operators.length)];
+            currentQuestion = { num1, num2, operator };
+            document.getElementById('question').innerText = `${num1} ${operator} ${num2} = ?`;
+            document.getElementById('answer').value = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseFloat(document.getElementById('answer').value);
+            let correctAnswer;
+
+            switch (currentQuestion.operator) {
+                case '+':
+                    correctAnswer = currentQuestion.num1 + currentQuestion.num2;
+                    break;
+                case '-':
+                    correctAnswer = currentQuestion.num1 - currentQuestion.num2;
+                    break;
+                case '*':
+                    correctAnswer = currentQuestion.num1 * currentQuestion.num2;
+                    break;
+                case '/':
+                    correctAnswer = currentQuestion.num1 / currentQuestion.num2;
+                    break;
+            }
+
+            if (userAnswer === correctAnswer) {
+                navigator.vibrate(2000);
+                generateQuestion();
+            } else {
+                navigator.vibrate(1000);
+            }
+        }
+
+        // Gera a primeira pergunta ao carregar
+        window.onload = generateQuestion;
+    </script>
+</body>
+</html>
